@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OX Quiz</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <h1>OX Quiz: 한국건축의 역사</h1>
+    <div id="question-container"></div>
+    <div id="controls">
+      <button id="true-btn">O</button>
+      <button id="false-btn">X</button>
+    </div>
+    <div id="result"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+#app {
+  text-align: center;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+h1 {
+  color: #333;
+}
+#controls button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #28a745;
+}
+const questions = [
+  {
+    question: "경복궁은 조선 시대에 지어진 궁궐이다.",
+    answer: true,
+  },
+  {
+    question: "불국사는 고려 시대에 처음 지어졌다.",
+    answer: false,
+  },
+  {
+    question: "고구려의 초기 도성은 평양에 있었다.",
+    answer: true,
+  },
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+const questionContainer = document.getElementById("question-container");
+const resultContainer = document.getElementById("result");
+const trueBtn = document.getElementById("true-btn");
+const falseBtn = document.getElementById("false-btn");
+
+function showQuestion() {
+  if (currentQuestionIndex < questions.length) {
+    questionContainer.textContent = questions[currentQuestionIndex].question;
+    resultContainer.textContent = "";
+  } else {
+    questionContainer.textContent = "퀴즈가 끝났습니다!";
+    resultContainer.textContent = `최종 점수: ${score} / ${questions.length}`;
+    trueBtn.style.display = "none";
+    falseBtn.style.display = "none";
+  }
+}
+
+function checkAnswer(answer) {
+  if (questions[currentQuestionIndex].answer === answer) {
+    score++;
+    resultContainer.textContent = "정답입니다!";
+  } else {
+    resultContainer.textContent = "오답입니다!";
+  }
+  currentQuestionIndex++;
+  setTimeout(showQuestion, 1000);
+}
+
+trueBtn.addEventListener("click", () => checkAnswer(true));
+falseBtn.addEventListener("click", () => checkAnswer(false));
+
+showQuestion();
